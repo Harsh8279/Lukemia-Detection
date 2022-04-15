@@ -55,7 +55,7 @@ for n,id_ in tqdm(enumerate(test_ids),total=len(test_ids)):
 
 print('done////////')
 
-image_x = random.randint(0,len(train_ids))
+image_x = random.randint(0,len(train_ids)-1)
 imshow(X_train[image_x])
 plt.show()
 imshow(np.squeeze(Y_train[image_x]))
