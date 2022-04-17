@@ -118,10 +118,18 @@ for file_name in file_name_list:
 
         im1 = PIL.Image.open("im/Bl.png")
         im2 = PIL.Image.open(seg_image_name)
-        im2.convert('1')
+        # gray = im2.convert('L')
+        # bw = gray.point(lambda x: 1 if x < 128 else 255, '1')
 
         im1.paste(im2,(plus[-1],minus[-1]))
         mask_image_name = f"TrainImages/{split_by_slash.split('.')[0]}/masks/{split_by_slash.split('.')[0]}_({str(plus[-1])},{str(minus[-1])}.png"
+        # size = 128, 128
+        # try:
+        #     im1.thumbnail(size, PIL.Image.ANTIALIAS)
+            # im1.save(outfile, "JPEG")
+            # im1.save(mask_image_name, quality=95)
+        # except IOError:
+        #     print("cannot create thumbnail for '%s'" % seg_image_name)
 
         im1.save(mask_image_name, quality=95)
         os.remove(seg_image_name)
