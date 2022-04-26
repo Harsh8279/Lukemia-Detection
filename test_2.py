@@ -16,9 +16,21 @@ for file_name in os.listdir('im'):
     if split_by_under[-1]=='1':
         file_name_list.append(file_name)
 
-test_iamge_files_count = int(len(file_name_list)-(len(file_name_list)*0.2))
+test_iamge_files_count = int(len(file_name_list)-(len(file_name_list)*0.8))
 
 test_iamge_files = random.sample(file_name_list,test_iamge_files_count)
+
+# train_iamge_files_count = int(len(file_name_list)-(len(file_name_list)*0.2))
+# train_iamge_files = random.sample(file_name_list,train_iamge_files_count)
+
+# print(file_name_list)
+train_file_list = list()
+# print(test_iamge_files)
+for i in file_name_list:
+    if i not in test_iamge_files:
+        train_file_list.append(i)
+
+
 
 for file_name in test_iamge_files:
     path = os.getcwd()
@@ -35,7 +47,7 @@ for file_name in test_iamge_files:
     segment_image_path = f"TestImages/{split_by_slash.split('.')[0]}/images/{split_by_slash.split('.')[0]}.jpg"
     x = cv2.imwrite(segment_image_path, img)
 
-for file_name in file_name_list:
+for file_name in train_file_list:
 
 
     path = os.getcwd()
