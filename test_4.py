@@ -189,7 +189,8 @@ outputs = tf.keras.layers.Conv2D(1,(1,1),activation='sigmoid')(c9)
 
 model = tf.keras.Model(inputs=[inputs],outputs=[outputs])
 
-model.compile(optimizer='adam',loss='binary_crossentropy')
+model.compile(optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])
+
 model.summary()
 
 checkpointer = tf.keras.callbacks.ModelCheckpoint('model_for_nuclei.h5',verbose=1,save_best_only=True)
@@ -200,9 +201,29 @@ callbacks = [
 ]
 
 # results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=16, epochs = 25,callbacks=callbacks)
-results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=16, epochs = 25)
-##################################################################################################################################
+results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=16, epochs = 20)
 
+print(results.history.keys())
+
+plt.plot(results.history['accuracy'])
+plt.plot(results.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+
+plt.plot(results.history['loss'])
+plt.plot(results.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+##################################################################################################################################
+import pickle
+filename = 'finalized_model.sav'
+pickle.dump(model, open(filename, 'wb'))
 
 idx = random.randint(0,len(X_train))
 
