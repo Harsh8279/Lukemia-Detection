@@ -201,8 +201,8 @@ callbacks = [
 ]
 
 # results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=16, epochs = 25,callbacks=callbacks)
-results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=16, epochs = 20)
-
+results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=16, epochs = 500)
+model.save('segmentation_model.h5')
 print(results.history.keys())
 
 plt.plot(results.history['accuracy'])
@@ -234,24 +234,67 @@ preds_test = model.predict(X_test,verbose=1)
 preds_train_t = (preds_train>0.5).astype(np.uint8)
 preds_val_t = (preds_val>0.5).astype(np.uint8)
 preds_test_t = (preds_test>0.5).astype(np.uint8)
+import cv2
+if not os.path.exists("Segmented_Train_images"):
+    os.mkdir("Segmented_Train_images")
 
+if not os.path.exists("Segmented_Test_images"):
+    os.mkdir("Segmented_Test_images")
 # perform a sanity check on some random training samples
-ix = random.randint(0,len(preds_train_t))
-imshow(X_train[ix])
-plt.show()
-imshow(np.squeeze(Y_train[ix]))
-plt.show()
-imshow(np.squeeze(preds_train_t[ix]))
-plt.show()
+for i in range(len(preds_test_t)):
+    print(i)
 
-# perform a sanity check on some random training samples
-ix = random.randint(0,len(preds_val_t))
-imshow(X_train[int(X_train.shape[0]*0.9):][ix])
-plt.show()
-imshow(np.squeeze(Y_train[int(Y_train.shape[0]*0.9):][ix]))
-plt.show()
-imshow(np.squeeze(preds_val_t[ix]))
-plt.show()
+    # ix = random.randint(0,len(preds_train_t))
+    imshow(X_train[i])
+    plt.show()
+    imshow(np.squeeze(Y_train[i]))
+    plt.show()
+    # np.squeeze(preds_train_t[i])
+    imshow(np.squeeze(preds_train_t[i]))
+    plt.show()
+    imshow(np.squeeze(preds_train_t[i]))
+    plt.axis('off')
+    # plt.axis('off')
+    segment_image_path = f"Segmented_Test_images/{i}_seg_test_000{i}.png"
+    plt.savefig(segment_image_path)
+    # plt.savefig('abc.jpg')
+    # plt.savefig('foo.jpg', bbox_inches='tight')
+    # from PIL import Image
+    #
+    # im = Image.fromarray(np.squeeze(preds_train_t[i]))
+    # segment_image_path = f"Segmented_Test_images/{i}_seg_test_000{i}.jpg"
+    # im.save(segment_image_path)
+    # segment_image_path = f"Segmented_Test_images/{i}_seg_test_000{i}.jpg"
+    # x = cv2.imwrite(segment_image_path, )
+
+
+for i in range(len(preds_train_t)):
+    print(i)
+
+    # ix = random.randint(0,len(preds_train_t))
+    imshow(X_train[i])
+    plt.show()
+    imshow(np.squeeze(Y_train[i]))
+    plt.show()
+    imshow(np.squeeze(preds_train_t[i]))
+    plt.show()
+    imshow(np.squeeze(preds_train_t[i]))
+    plt.axis('off')
+    segment_image_path = f"Segmented_Train_images/{i}_seg_train_000{i}.jpg"
+    plt.savefig(segment_image_path)
+    # x = cv2.imwrite(segment_image_path, np.squeeze(preds_train_t[i]))
+
+# import cv2
+# x = cv2.imwrite("abc.jpg", np.squeeze(preds_train_t[ix]))
+
+# # perform a sanity check on some random training samples
+# ix = random.randint(0,len(preds_val_t))
+# imshow(X_train[int(X_train.shape[0]*0.9):][ix])
+# plt.show()
+# imshow(np.squeeze(Y_train[int(Y_train.shape[0]*0.9):][ix]))
+# plt.show()
+# imshow(np.squeeze(preds_val_t[ix]))
+# plt.show()
 
 
 
